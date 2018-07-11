@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>创建标的</title>
+<style>
+body{background-color:#b0c4de;}
+div{
+text-align: center;
+}
+
+</style>
+   <script src="../static/jquery.min.js"></script>
+    <script>
+ function gradeChange(){
+      b=$('#select_name option:selected').val();
+      var ui =document.getElementById("put");
+      var gi =document.getElementById("guoqiao");// 是否是过桥贷选择框
+      if (b=='qi'){
+
+          gi.style.display="";
+      }
+      else{
+
+           gi.style.display="none";
+      }
+       }
+  function guoQiaoChange() {
+     c=$('#guoqiao option:selected').val();//选中的值
+      var ui =document.getElementById("put");//日利率
+      var hi =document.getElementById("hut");//年利率
+      if (c=='nomorl'){
+          ui.style.display="none";
+          hi.style.display="";
+      }
+      else {
+           ui.style.display="";
+          hi.style.display="none";
+      }
+  }
+        $(document).ready(function() {
+
+          // k= $('#loantype option:selected').text();//选中的文本
+            b=$('#select_name option:selected').val();//选中的值
+            var ui =document.getElementById("put");//日利率
+            var gi =document.getElementById("guoqiao");// 是否是过桥贷选择框
+          if (b=='qi'){
+
+            gi.style.display="";
+          }
+          else {
+
+              gi.style.display="none";
+          }
+
+          $(".btn10").click(function(){
+    //alert('222')
+    var data = $("#addForm").serialize();
+    //alert(data)
+    var url = $("#addForm").attr("action");
+    //alert(url)
+   $.ajax({
+        type: 'POST',
+        url: url,
+       dataType: 'json',
+        data: data,
+        success: function (data) {
+           alert(data)
+            //$('#json').html(formatJson(data));
+        }
+     });
+});
+        });
+    </script>
+</head>
+<body>
+<div>
+<h3>滴，滴滴</h3>
+<form  target="_blank" id="addForm" action="/admin/create_loan" method="post">
+<p>贷款类型目前仅支持房缘贷和企业贷款</p>
+<select   id="select_name" name="loantype" onchange="gradeChange()">
+    <option value="fang">房缘贷</option>
+    <option value="qi">企缘贷</option>
+</select  >
+    <select   id="guoqiao"  onchange="guoQiaoChange()">
+    <option value="nomorl">非过桥贷</option>
+    <option value="guo">是过桥贷</option>
+</select  >
+<p>身份证号/信用代码:<input type="text" name="idcard" placeholder="请输入身份证号或者企业统一社会信用代码" style="height:25px;text-align:center" size='40'></p>
+<p>标的数量:<input type="text" name="num" placeholder="请输入标的数量（2开始）" style="height:25px;text-align:center" size='40'></p>
+<p>标的金额:<input type="text" name="money" placeholder="请输入标的金额" style="height:25px;text-align:center" size='40'></p>
+    <span id="hut" style="display:block">标的年利率:<input type="text" name="yearRates" placeholder="请输入标的年利率" style="height:25px;text-align:center" size='40'></span>
+   <br>
+    <span id="put" style="display:none">标的日利率:<input  type="text" name="dailyRate" placeholder="请输入标的日利率" style="height:25px;text-align:center;" size='40' ></span>
+<p>标的期限(月/天):<input type="text" name="month" placeholder="请输入标的期限（月/天）" style="height:25px;text-align:center" size='40'></p>
+<p>标的名称:<input type="text" name="title" placeholder="请输入标的名称" style="height:25px;text-align:center" size='40'></p>
+
+</form>
+    <p><button class="btn10" id="one" type="submit">开始</button></p>
+{#<h3>{{get_flashed_messages()[0]}}</h3>#}
+</div>
+</body>
+</html>
